@@ -571,7 +571,7 @@ def nevera_login(request):
         return redirect("/indexex/")
 
     else:
-        return render(request, "usuario/login.html", {}, RequestContext(request))
+        return render(request, "usuario/login.html", {})
 
 
 def nevera_logout(request):

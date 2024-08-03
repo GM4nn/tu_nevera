@@ -1,0 +1,212 @@
+{% extends 'subir/base.html' %}
+{% load static %}
+
+
+{% block title %}Seguidores {% endblock %}
+
+
+
+  <!-- nav en tamaño pequeño para adelante-->
+        {% block tabactive1 %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">INICIO</a>
+        </li>
+
+    <!-- tab de ve a cocinar! -->  
+        
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'cocinar' %}">VE A COCINAR!</a>
+        </li>  
+      
+    <!-- tab de album -->    
+      
+        <li class="nav-item">
+           
+            <a class="nav-link" href="{% url 'album'%}">ALBUM</a>  
+        </li>
+        
+  
+            <li class="nav-item">
+                <a class="nav-link"  href="/usuario/siguiendo/{{ user.username }}/">SIGUIENDO</a>  
+            </li>
+
+        
+        {% endblock %}
+
+{% block contenido %}
+<section>
+
+	{% if users %}
+	
+	 <div class="card-group row justify-content-start align-items-end">
+		{% for user in users %}
+           
+            <div class="col-12 col-md-4 col-lg-3 my-3 hidden-sm-down">
+                    <div class="card  mr-3 px-2 py-2 " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                            
+                  
+                    <h4 class="card-header">{{user.get_full_name}} </h4>
+                    <div class="card-body py-2 text-center">
+
+                  {% if user.Profile2.imagen %}
+                   
+                   <img src="{{user.Profile2.imagen}}" class="mt-2 img-fluid">
+                   
+                   {% else %}
+                   
+                   <img src="{% static 'subir/img/chef.png' %}" class="mt-2 img-fluid">
+                   
+                  {% endif %}
+                    
+       
+                        <h4 class="card-title mt-4"> Acerca de {{user.username}}: </h4>
+                            
+                            <p class="card-text">                             
+                            
+                            {{ user.Profile2.frase }}
+                                
+                            </p>
+                            <p>
+                                <strong>Ultima vez ingresado: </strong><br>Joined on {{ user.date_joined }}<br>
+                              <strong> Email: </strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                            </p>
+                         
+
+                   
+                        <a href="{% url 'usuario:profile' user.username %}" class="btn btn-warning btn-block"> Ir al perfil </a>
+                    </div>
+                    
+                  
+
+                </div>
+                
+
+        </div>  
+        
+            <div class="col-12 hidden-md-up hidden-xs-down mb-3">                       
+                              
+                    <div class="card " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                            
+                    
+                    <h4 class="card-header">{{user.get_full_name}} </h4>
+                    <div class="card-body py-2">
+                      <div class="row">  
+                        <div class="col-5 align-self-center">
+                           
+                           {% if user.Profile2.imagen %}
+                           
+                            <img src="{{user.Profile2.imagen}}" width="90%" class="px-2 mx-2">
+                            
+                            
+                            
+                                {% else %}
+                            
+                            
+                            <img src="{% static 'subir/img/chef.png' %}" width="75%" class="px-2 mx-2">
+                            
+                            {% endif %}
+                            
+                            
+                            
+                        </div>
+                        
+                        <div class="col-7 my-3 pr-4">
+                              <h4 class="card-title mt-4"> Acerca de {{user.username}}: </h4>
+                               <p class="card-text mr-2">                             
+
+                                    {{ user.Profile2.frase }}
+
+                                    </p>
+                                    <p>
+                                        <strong class="mr-2">Ultima vez ingresado: </strong><br>Joined on {{ user.date_joined }}<br>
+                                      <strong> Email: </strong> <a class="mr-2" href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                    </p>
+                         
+                                     
+                        <a href="{% url 'usuario:profile' user.username %}" class="btn btn-warning btn-block mt-2 mr-4"> Ir al perfil </a>
+                           
+                            
+                           
+                            
+                        </div>
+                    </div>
+                           
+                     
+                         
+
+                
+                    </div>
+                    
+                  
+
+                </div>
+                           
+               
+            </div>    
+                     
+                        <!-- -->   
+                                       
+                <div class="col-12 mb-3 hidden-sm-up">
+                    <div class="card mr-3 px-2 py-2 " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                    
+                    <h4 class="card-header">{{user.get_full_name}} </h4>
+                    <div class="card-body py-2 text-center">
+
+                      {% if user.Profile2.imagen %}
+                            <img src="{{user.Profile2.imagen}}" class="mt-2 img-fluid">
+                       
+                      {% else %}
+                            <img src="{% static 'subir/img/chef.png' %}" width="75%" class="px-2 mx-2">
+                    
+                       {% endif %}
+       
+                        <h4 class="card-title mt-4"> Acerca de {{user.username}}: </h4>
+                            
+                            <p class="card-text mx-2 px-2">                             
+                            
+                            {{ user.Profile2.frase }}
+                                
+                            </p>
+                            <p>
+                                <strong class="mr-2">Ultima vez ingresado: </strong><br>Joined on {{ user.date_joined }}<br>
+                              <strong class=""> Email: </strong> <a class="mr-2" href="mailto:{{ user.email }}">{{ user.email }}</a>
+                            </p>
+                         
+
+                   
+                        <a href="{% url 'usuario:profile' user.username %}" class="btn btn-warning btn-block mr-4"> Ir al perfil </a>
+                    </div>
+                    
+                  
+
+                </div>
+                
+
+        </div>                                    
+                      
+      
+            
+              
+                  
+		{% endfor %}
+		</div>
+	{% else %}
+		<p>No hay usuarios que mostrar</p>
+	{% endif %}
+	
+
+{% endblock %}
+
+
+{% block scriptsexternos %} 
+<script src="{% static 'subir/js/buefy22.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/bootstrap.min.js' %}"></script>
+
+{% endblock %}

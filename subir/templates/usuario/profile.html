@@ -1,0 +1,380 @@
+{% extends 'subir/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock %}
+{% block textarea %}{{ user.username }} {% endblock %}
+
+
+  <!-- nav en tamaño pequeño para adelante-->
+        {% block tabactive1 %}
+
+      
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">INICIO</a>
+            </li>
+        <!-- tab de categorias --> 
+
+    
+        <!-- tab de ve a cocinar! -->  
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cocinar' %}">VE A COCINAR!</a>
+            </li>  
+
+        <!-- tab de album -->    
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'album' %}">ALBUM</a>  
+            </li>   
+            
+                              
+             
+               
+            <li id="hijo" class="nav-item">
+                <a class="nav-link" href="/usuario/siguiendo/{{ usermio }}/">SIGUIENDO</a>  
+            </li>
+  
+
+      
+   
+        {% endblock %}
+
+
+{% block contenido %}
+
+
+
+
+<div class="modal fade" id="modalfoto" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content" style="background:none;border: none;">
+       <div class="modal-header d-flex justify-content-end" style="border:none;">
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="font-size:50px;" class="text-white">&times;</span>
+        </button>
+   </div>
+   
+   <div class="modal-body d-flex justify-content-center">
+    {% if avatares2 %}
+   
+      <img src="{{avatares2}}" class="img-fluid">
+      
+       {% else %}
+            <img src="{% static 'subir/img/chef.png' %}" class="img-fluid">
+
+       {% endif %}
+       </div>
+      <div class="modal-footer d-flex justify-content-center text-white" style="border:none;">
+          
+          <h4>{{ user.username }}</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+           <div class="card bg-faded">
+                    
+                   <div class="card-block">
+                      
+                   <div class="row justify-content-center">
+        
+                    <div class="col-10 col-md-auto align-self-center img-fluid"> 
+                           
+                        
+                                       {% if avatares2 %} 
+
+                                        <p class="text-center"> <img src="{{avatares2}}" class="my-3 img-fluid" width="350px" data-toggle="modal" data-target="#modalfoto" style="cursor: pointer;"></p>
+
+                                       {% else %}
+                                          <p class="text-center"> <img src="{% static 'subir/img/chef.png' %}" class="img-fluid" width="350px" data-toggle="modal" data-target="#modalfoto" style="cursor: pointer;"></p> 
+
+
+                                       {% endif %} 
+
+   
+   
+                               
+                        
+                               <div class="w-100"></div>
+                           
+                           
+                               <h6 class="text-center">
+                               <button style="cursor:pointer;" type="button" class="btn btn-link" data-toggle="modal" data-target="#modalfoto"> Ver foto</button>
+                               </h6>
+                               
+                               <div class="btn-group row d-flex justify-content-center">
+                                   
+                                    <a class="btn btn-secondary col-12 col-sm-auto mb-2" href="#recetas">{{ length }} Receta{{ length|pluralize }}</a>
+                                    
+                                    <a id="seguirresult" class="btn btn-secondary col-12 col-sm-auto mb-2" href="/usuario/seguidores/{{ user.username }}/">{{ seguidores|length }} seguidores</a>
+				                    
+				                    
+				                    <a class="btn btn-secondary col-12 col-sm-auto mb-2" href="/usuario/siguiendo/{{ user.username }}/"> siguiendo</a>
+                       
+                       
+                               </div>
+                        
+                      
+                       </div> 
+                       
+                       
+                       
+                       
+              
+                       
+                       
+                       
+                     
+                       <div class="col-12 col-md-5 my-4 fuenteennegrilla">
+                     <strong class="my-2 h4 text-uppercase"><p class="text-center">{{ user.username }}</p>  </strong> 
+                     <hr>
+                     <p> <strong class="mr-2 h4"> NOMBRE: </strong> {{ user.first_name }}</p>
+                      <hr>
+                    
+                     <p> <strong class="mr-2 h4"> APELLIDO: </strong> {{ user.last_name }}</p>
+                      <hr>
+              
+                     <p> <strong class="mr-2 h4"> CIUDAD: </strong> {{ profile.ubicacion }}</p>
+                      <hr>
+                     <p> <strong class="mr-2 h4"> ULTIMA VEZ INGRESADO: </strong> {{ user.date_joined }}</p>
+                      <hr>
+                     <p> <strong class="mr-2 h4"> CORREO: </strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+                      <hr>
+                     <p> <strong class="mr-2 h4 text-uppercase"> ACERCA DE {{ user.username }}: </strong> {{ profile.frase|linebreaksbr }}</p>
+                      <hr class="my-3 hidden-md-up">
+                    <a class="hidden-md-up h4 text-primary pt-2" href="/usuario/configuracion/" style="font-family: 'Hot-legend';">
+                       CONFIGURACION DE LA CUENTA
+                    </a>
+        
+                
+                      <hr class="my-3 hidden-md-up">
+                      
+        {% if logueado.is_authenticated %}
+		{% if logueado != user %}
+			<form action="" method="post" id="seguirresult2">
+				{% csrf_token %}
+				<input id="elusuario" type="hidden" name="user" value="{{ user.username }}">
+				
+				<p>
+				<br> 
+                <!-- verificar si el usuario si esta siguiendo al usuario en el que esta parado -->   
+       
+                   
+                        {% if following %}
+
+                        <button id="botoncito" class="btn btn-danger btn-block" type="button" onclick="seguimiento()" value="dejar de seguir">
+                            dejar de seguir
+                        </button>
+
+                          {% else %}
+
+                        <button id="botoncito" class="btn btn-success btn-block" type="button" onclick="seguimiento()" value="seguir">
+                            seguir
+                        </button>
+
+                        {% endif %}
+
+                
+                
+              
+                
+ 
+                 
+
+				</p>
+				
+			</form>
+		{% endif %}
+		{% endif %}
+                               
+                        </div>
+         
+                    </div>
+         
+                </div>
+               </div>
+
+
+
+
+             <!-- tamaño grande -->
+             
+                 
+
+                      {% if recetas|length %}
+                      
+                    <h4 class="display-4 my-4">RECETAS DE: {{ user.username }}</h4> 
+                      
+                                  <div class="row">
+                                  
+                                  {% for receta in recetas %}
+        <div class="col-12 col-md-4 col-lg-3 my-3 hidden-sm-down">
+                    <div class="card  mr-3 px-2 py-2 " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                            
+                    <img src="{{receta.imagen.url}}" class="card-img-top img-fluid">
+                    <h4 class="card-header">{{receta.nombre}} </h4>
+                    <div class="card-body py-2">
+
+                    <p style="font-size: 14px;">
+                            <strong>Publicado:</strong> {{ receta.fecha }}<br>
+                            <strong class="my-3">Intrucciones:</strong><br>
+                            {{ receta.instrucciones|linebreaksbr|truncatechars:100}}       
+                       </p>     
+                                      
+                            <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-warning btn-block"> Ir a la receta! </a>
+                                       
+                         <p class="card-text" style="font-size: 14px;">
+                                {% if receta.user == logueado %}
+                                    <a class="btn btn-link btn-block" href="/usuario/borrar/{{ receta.id }}/">Borrar</a>
+                                {% endif %}
+                         </p>
+                         
+
+                   
+                     
+                    </div>
+                    
+                  
+
+                </div>
+                
+
+        </div>
+                              
+                              
+            <div class="col-12 hidden-md-up hidden-xs-down my-4">                       
+                              
+                    <div class="card " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                            
+                    
+                    <h4 class="card-header">{{receta.nombre}} </h4>
+                    <div class="card-body py-2">
+                      <div class="row">  
+                        <div class="col-5 align-self-center">
+                            <img src="{{receta.imagen.url}}" width="90%" class="px-2 mx-2">
+                            
+                        </div>
+                        
+                        <div class="col-7 my-3 pr-4">
+                         
+                        <p class="mr-2" style="font-size: 14px;">
+                            <strong>Publicado:</strong> {{ receta.fecha }}<br>
+                            <strong class="my-3">Intrucciones:</strong><br>
+                            {{ receta.instrucciones|linebreaksbr|truncatechars:100}}       
+                       </p>     
+                                      
+                            <a class="mr-2 btn btn-warning btn-block" href="{% url 'receta_detalle' receta.pk %}" class="btn btn-warning btn-block"> Ir a la receta! </a>
+                                       
+                         <p class="card-text mr-2" style="font-size: 14px;">
+                                {% if receta.user == logueado %}
+                                    <a class="btn btn-link btn-block" href="/usuario/borrar/{{ receta.id }}/">Borrar</a>
+                                {% endif %}
+                         </p>
+                            
+                           
+                            
+                        </div>
+                    </div>
+                           
+                     
+                         
+
+                
+                    </div>
+                    
+                  
+
+                </div>
+                           
+               
+            </div>    
+                <!-- tamaño pequeño -->             
+                <div class="col-12 mb-3 hidden-sm-up my-4">
+                    <div class="card  mr-3 px-2 py-2 " style="-webkit-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);
+                    box-shadow: 0px 2px 18px 5px rgba(0,0,0,0.75);">
+                            
+                    <img src="{{receta.imagen.url}}" class="card-img-top img-fluid">
+                    <h4 class="card-header">{{receta.nombre}} </h4>
+                    <div class="card-body py-2">
+
+                   
+                    <p style="font-size: 14px;">
+                            <strong>Publicado:</strong> {{ receta.fecha }}<br>
+                            <strong class="my-3">Intrucciones:</strong><br>
+                            {{ receta.instrucciones|linebreaksbr|truncatechars:100}}       
+                       </p>     
+                                      
+                            <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-warning btn-block"> Ir a la receta! </a>
+                                       
+                         <p class="card-text" style="font-size: 14px;">
+                                {% if receta.user == logueado %}
+                                    <a class="btn btn-link btn-block" href="/usuario/borrar/{{ receta.id }}/">Borrar</a>
+                                {% endif %}
+                         </p>
+                    </div>
+                    
+                  
+
+                </div>
+                
+
+        </div>                                    
+                      
+                           
+                                     
+                      
+                              
+                               
+                               
+                               
+                               
+                                {% endfor %}
+
+           
+            
+            
+            
+            
+            </div>  
+            
+            {% else %}
+            
+                    <h4>ESTE USUARIO NO HA CREADO NINGUNA RECETA</h4>
+            
+             {% endif %}
+             
+                                         
+                                     
+        
+
+   
+
+
+
+
+
+
+
+
+	
+
+{% endblock %}
+
+
+
+
+{% block scriptsexternos %}
+<script src="{% static 'subir/js/buefy22.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'usuario/js/ajax2.js' %}"></script>
+{% endblock %}

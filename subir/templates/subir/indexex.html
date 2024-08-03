@@ -1,0 +1,442 @@
+{% extends 'subir/base.html' %}
+
+
+{% load static %}
+
+{% block title %}
+    Inicio
+{% endblock %}   
+
+    {% block tabactive1 %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'index' %}">INICIO</a>
+    </li>
+
+<!-- tab de ve a cocinar! -->  
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'cocinar' %}">VE A COCINAR!</a>
+    </li>  
+
+<!-- tab de album -->    
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'album' %}">ALBUM</a>  
+    </li>
+    
+    
+            
+
+        <li class="nav-item">
+            <a class="nav-link" href="/usuario/siguiendo/{{ user.username }}/">SIGUIENDO</a>  
+        </li>
+
+        
+    
+    {% endblock %}
+
+         {% block contenedorotros %}
+      
+            <div id="nav-inicio">
+                <div class="row justify-content-md-center justify-content-xl-start">    
+                   <div class="col-12 col-md-10 col-lg-10 col-xl-6 nombresusersrecetas">
+   
+<div>       
+
+
+
+
+       
+        {% for receta in Rec %}
+
+  
+                    {% if forloop.counter|divisibleby:2  %}       
+
+            <a style="font-family:Hot-Legend;font-size: 25px;color: black;" href="{% url 'usuario:profile' receta.user %}" class="my-0 d-flex text-uppercase justify-content-center justify-content-sm-end">{{ receta.user }}</a>  
+
+                                <hr class="mt-0 mb-2">  
+                                
+            <p class="text-center"><img src="{{ receta.imagen.url }}" width="60%" class="hidden-sm-up">  </p>
+                                <div class="media">
+
+                                    <div class="media-body row justify-content-between">
+
+                                        <div class="col-4 hidden-xs-down">
+                            
+                                            
+                                <span class="text-muted float-left fecha"> {{receta.fecha.date}}  </span>
+                                                            
+                                       
+                                        
+                                        </div>
+
+                                        <div class="col-auto ml-3 mr-4 ">
+                                            <a href="{% url 'receta_detalle' receta.pk %}" class="h5 text-uppercase">  {{receta.nombre}} </a> 
+                                            <span class="text-muted fecha hidden-sm-up"> <br>{{receta.fecha.date}}  </span>  
+                                        </div>    
+                                        <div class="col-12">    
+                                        <p class="text-justify mr-2">
+                                        {{receta.instrucciones|linebreaks|truncatechars:150}}
+
+                                        </p>
+                                            </div>
+                                    </div> 
+                                           
+                                            <img src="{{ receta.imagen.url }}" width="20%" class="img-fluid hidden-xs-down">  
+                               </div>
+
+                       
+                          
+                          {% else %}
+                                       
+
+                        <a style="font-family:Hot-Legend;font-size: 25px;color: black;" href="{% url 'usuario:profile' receta.user %}" class="my-0 d-flex text-uppercase justify-content-center justify-content-sm-start">{{ receta.user }}</a>
+                        <hr class="mt-0 mb-2">  
+                       <!-- clase media para estructurar las recetas publicadas y los comentarios -->
+                    <p class="text-center"><img src="{{ receta.imagen.url }}" width="60%" class="hidden-sm-up">  </p>
+                        <div class="media">
+                          <!--imagen de receta publicada -->
+                         <img src="{{ receta.imagen.url }}" width="20%" class="img-fluid hidden-xs-down"> 
+                           
+                            <div class="media-body row justify-content-between">
+                                
+                                <div class="col-auto ml-4">
+                                    <a href="{% url 'receta_detalle' receta.pk %}" class="h5 text-uppercase">{{receta.nombre}}</a>
+                                    <span class="text-muted fecha hidden-sm-up"> <br>{{receta.fecha.date}}  </span> 
+                                </div>
+                                
+                                <div class="col-4 hidden-xs-down">
+                                    <span class="text-muted float-right fecha"> {{receta.fecha.date}}  </span>
+                             
+                                </div>
+                                <div class="col-12 mx-2">
+                                    <p class="text-justify mx-4 ">
+                                            
+                                             {{receta.instrucciones|linebreaks|truncatechars:150}}
+
+                                    </p>
+                                </div>    
+                                    
+                            </div> 
+                        
+                       </div>
+                           
+                       {% endif %}
+                        
+                           
+                            {% endfor %}    
+                          <!-- ahora un media hacia la derecha -->                 
+                      
+               
+                    
+                    
+                    <div class="sidebar hidden-lg-down col-md-6 my-3">
+                        
+                    
+                    <div class="tab-content">
+                  
+                 <!-- carousel de top-->
+                        <div class="tab-pane active" id="top" role="tabpanel">
+                            <div id="secondary-carousel" class="carousel slide" data-ride="carousel">
+                              <ol class="carousel-indicators">
+                                <li data-target="#secondary-carousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#secondary-carousel" data-slide-to="1"></li>
+                                <li data-target="#secondary-carousel" data-slide-to="2"></li>
+                              </ol>
+                              <div class="carousel-inner">
+                               
+                               {% for re in filtro_fecha %}
+                               
+                               
+                               {% if forloop.first %}
+                                <div class="carousel-item active">
+                                    <div class="card">
+                                    <img src="{% static 'subir/img/fondorecetas.png' %}" class="card-img img-fluid" alt="Card image">
+                                        <div class="card-img-overlay row align-items-center justify-content-center">
+                                        
+                                    <div class="col-10 text-white py-4">
+                                                
+                                                
+                                            <a href="{% url 'receta_detalle' re.pk %}">    
+                                                <div class="row">
+                                                    <div class="col-6 align-self-center text-white">
+                                                        
+                                                         <h4>{{re.nombre}}</h4>
+                                                        <p>{{re.instrucciones|truncatewords:15}}</p>
+                                        
+                                                    </div>
+                                                    <div class="col-6">
+                                                            <img src="{{re.imagen.url}}" class="card-img img-fluid" alt="Card image" style="-webkit-box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);-moz-box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);">
+                                                        
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                            </a>    
+                                             
+                                               
+                                    </div>
+                                         
+                                      
+                                        
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                
+                                
+                            {% else %}
+                               
+                                <div class="carousel-item">
+                                    <div class="card">
+                                            <img src="{% static 'subir/img/fondorecetas.png' %}" class="card-img img-fluid" alt="Card image">
+                                       
+                                        <div class="card-img-overlay row align-items-center justify-content-center">
+                                            <div class="col-10 text-white py-4">
+                                                      <a href="{% url 'receta_detalle' re.pk %}">  
+                                                        <div class="row">
+                                                            <div class="col-6 align-self-center text-white">
+
+                                                                 <h4>{{re.nombre}}</h4>
+                                                                <p>{{re.instrucciones|truncatewords:15}}</p>
+
+                                                            </div>
+                                                            <div class="col-6">
+                                                            <img src="{{re.imagen.url}}" class="card-img img-fluid" alt="Card image" style="-webkit-box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);-moz-box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);box-shadow: 4px 1px 11px 7px rgba(0,0,0,0.75);">
+
+                                                            </div>
+
+                                                        </div>
+                                                       </a>    
+
+                                            </div>
+                                         
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                
+                            {% endif %}
+
+                            {% endfor %}
+                              </div>
+                              <a class="carousel-control-prev" href="#secondary-carousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="carousel-control-next" href="#secondary-carousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </div>
+                        </div>
+            <!-- carousel de lo mas votado!-->
+                        
+                        <div class="tab-pane fade" id="votado" role="tabpanel">
+                            <div id="tersary-carousel" class="carousel slide" data-ride="carousel">
+                              <ol class="carousel-indicators">
+                                <li data-target="#tersary-carousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#tersary-carousel" data-slide-to="1"></li>
+                                <li data-target="#tersary-carousel" data-slide-to="2"></li>
+                              </ol>
+                              <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="card">
+                                       <img src="{% static 'subir/img/fondousuarios.png' %}" class="card-img img-fluid" alt="Card image">
+                                       
+                                        <div class="card-img-overlay text-center row text-white justify-content-center pt-4">
+                                           
+                                           <h4 class="col-xl-12 mt-4">
+                                            primer usuario con mas seguidores: {{primero.user}}
+                                            </h4>                    
+                                             <div class="col-auto">
+                                            {% if primero.imagen %}
+                                              
+                                        <img src="{{primero.imagen}}" width="100px;" class="img-fluid">
+                                              
+                                            {% else %}
+                                                     
+                                            <img src="{% static 'subir/img/chef.png'% }" width="100px;" class="img-fluid">
+                                            {% endif %}
+
+                                       
+    
+                                                
+                                             </div>   
+                                             
+                                             
+                                             <div class="col-auto ml-4">
+                                                 
+                                                <p class="text-left">
+                                                       <strong class="text-white">cantidad de seguidores:</strong>&nbsp;{{primerocant}}
+                                                            <br>
+                                                            <strong class="text-white">Acerca de {{primero.user}}:</strong>
+                                                               <br>
+                                                                {{primero.frase|truncatechars:20}}
+                                                            <br>
+                                                               
+                                                    <a class="btn btn-link pl-0 text-white" href="{% url 'usuario:profile' primero.user %}">Ir al perfil</a>            
+                                                                
+                                                 </p>
+                                                        
+                                                 
+                                             </div>
+
+                          
+                                                   
+
+                                                
+                                      
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="card">
+                                       <img src="{% static 'subir/img/fondousuarios.png' %}" class="card-img img-fluid" alt="Card image">
+                                       
+                                        <div class="card-img-overlay text-center row justify-content-center text-white pt-4">
+        
+                                            <h4 class="col-xl-12  mt-4">Segundo usuario con mas seguidores: {{segundo.user}}</h4>    
+                                            <div class="col-auto">
+            
+                                               {% if segundo.imagen %}
+                                                <img src="{{segundo.imagen}}" width="100px;" class="img-fluid float-right">
+                                               
+                                               {% else %}
+                                               
+                                                    <img src="{% static 'subir/img/chef.png' %}" width="100px;" class="img-fluid float-right">
+                                               
+                                               {% endif %}
+                                                
+                                                
+                                             </div>   
+                                             
+                                             
+                                             <div class="col-auto ml-4">
+                                                 
+                                                <p class="text-left">
+                                                       <strong class="text-white">cantidad de seguidores:</strong>&nbsp;{{segundocant}}
+                                                            <br>
+                                                            <strong class="text-white">Acerca de {{segundo.user}}:</strong>
+                                                               <br>
+                                                        {{segundo.frase|truncatechars:20}}
+                                                        <br>
+                                                    <a class="btn btn-link pl-0 text-white" href="{% url 'usuario:profile' segundo.user %}">Ir al perfil</a> 
+                                                 </p>
+                                                        
+                                                 
+                                             </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="card">
+                                       <img src="{% static 'subir/img/fondousuarios.png' %}" class="card-img img-fluid" alt="Card image">
+                                       
+                                       
+                                     
+                                        <div class="card-img-overlay text-center row justify-content-center text-white pt-4">
+        
+                                            <h4 class="col-xl-12  mt-4">Tercer usuario con mas seguidores: {{tercero.user}}</h4>    
+                                            
+                                        
+                                            <div class="col-auto">
+            
+                                               {% if tercero.imagen %}
+                                               
+                                                <img src="{{tercero.imagen}}" width="100px;" class="img-fluid float-right">
+                                            
+                                              {% else %}
+                                                                    
+                                                <img src="{% static 'subir/img/chef.png' %}" width="100px;" class="img-fluid float-right">
+                                               
+                                               {% endif %}
+                                                
+                                             </div>   
+                                              
+ 
+ 
+                                             
+                                             <div class="col-auto">
+                                                 
+                                                <p class="text-left ml-4">
+                                                       <strong class="text-white">cantidad de seguidores:</strong>&nbsp;{{tercerocant}}  
+                                                            <br>
+                                                            <strong class="text-white">Acerca de {{tercero.user}}:</strong>
+                                                               <br>
+                                                        {{tercero.frase|truncatechars:20}}
+                                                        
+                                                        <br>
+                                            <a class="btn btn-link pl-0 text-white" href="{% url 'usuario:profile' tercero.user %}">Ir al perfil</a>   
+                                                
+                                                 </p>
+                                                        
+                                                 
+                                             </div>
+                                             
+                                          
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                              </div>
+                              <a class="carousel-control-prev" href="#tersary-carousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="carousel-control-next" href="#tersary-carousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </div>
+
+                        </div>
+                    </div>
+                        
+                    <!-- botones para ir a los diferentes carousels -->
+                    
+                    <ul class="colorgris nav nav-pills" role="tablist" id="etc">
+                       
+    
+
+
+                        <li class="nav-item text-center" style="width:50%">
+                            <a class="nav-link active" data-toggle="tab" href="#top" >RECIENTE</a>
+                        </li>  
+
+
+                        <li class="nav-item text-center" style="width:50%">
+                            <a class="nav-link" data-toggle="tab" href="#votado">LO MAS SEGUIDO!</a>  
+                        </li>     
+                        
+             
+                            
+               
+
+                    </ul>
+                        
+                    </div>
+                </div>    
+            </div>
+            <!-- seccion de categorias del menu principal-->
+        
+        {% endblock %}
+        
+
+{% block scriptsexternos %} 
+<script src="{% static 'subir/js/buefy22.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'subir/js/bootstrap.min.js' %}"></script>
+
+{% endblock %}

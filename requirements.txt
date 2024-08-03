@@ -19,3 +19,4 @@ social-auth-core==1.7.0
 urllib3==1.22
 gunicorn==22.0.0
 whitenoise==6.7.0
+pillow==10.4.0 

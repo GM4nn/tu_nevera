@@ -63,6 +63,7 @@ https://tu-nevera.onrender.com/usuario/login/
 
 ## Authors
 
+- [@GM4nn](https://github.com/GM4nn)
 - [@AntonioAMPY](https://github.com/AntonioAMPY)
 - [@Jpvillegas](https://github.com/Jpvillegas)
 
